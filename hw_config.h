@@ -587,7 +587,7 @@
 #elif  defined(TARGET_HW_PX4_PIO_V1) ||  defined(TARGET_HW_PX4_PIO_V2)
 
 # define APP_LOAD_ADDRESS               0x08001000
-# define APP_SIZE_MAX                   0xf000
+# define APP_SIZE_MAX                   0x1f000         /* 124 KB (128 KB - 4 KB bootloader) */  //0xf000 60kb f100
 # define BOOTLOADER_DELAY               200
 # define BOARD_PIO
 # define INTERFACE_USB                  0
@@ -602,8 +602,9 @@
 # define BOARD_PORT_LEDS                GPIOB
 # define BOARD_CLOCK_LEDS_REGISTER      RCC_APB2ENR
 # define BOARD_CLOCK_LEDS               RCC_APB2ENR_IOPBEN
-# define BOARD_LED_ON                   gpio_clear
-# define BOARD_LED_OFF                  gpio_set
+# define BOARD_LED_ON                   gpio_set        /* Active-HIGH: set = ON */
+# define BOARD_LED_OFF                  gpio_clear      /* Active-HIGH: clear = OFF */
+
 
 # define BOARD_USART                    USART2
 # define BOARD_USART_CLOCK_REGISTER     RCC_APB1ENR
@@ -622,10 +623,16 @@
 # define BOARD_FORCE_BL_PULL            GPIO_CNF_INPUT_FLOAT // depend on external pull
 # define BOARD_FORCE_BL_VALUE           BOARD_FORCE_BL_PIN
 
-# define BOARD_FLASH_SECTORS            60
+
+# define BOARD_FLASH_SECTORS            124             /* 124 sectors of 1 KB each (124 KB app) */ //60 for f100
+# define BOARD_FLASH_SIZE               (128 * 1024)    /* 128 KB Total Flash */
 # define BOARD_TYPE                     10
 # define FLASH_SECTOR_SIZE              0x400
 # define NO_OTP_SN_CHIP                 1
+
+
+
+
 
 /****************************************************************************
  * TARGET_HW_PX4_PIO_V3
